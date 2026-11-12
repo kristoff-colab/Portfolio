@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kristoff Lance L. Sosmeña — Web &amp; Game Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{--bg:#050508;--tx:#f3f3fa;--mu:#9a9ab0;--cy:#00f0ff;--vi:#7000ff;--mg:#ff007a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth;scroll-padding-top:90px;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:'Space Grotesk',system-ui,sans-serif;overflow-x:hidden}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.display{letter-spacing:-.04em;line-height:.92;font-weight:700}
+.glass{background:rgba(15,15,25,.45);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.08);border-top-color:rgba(255,255,255,.15);border-left-color:rgba(255,255,255,.15);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 -12px 30px rgba(0,0,0,.35),0 20px 50px rgba(0,0,0,.4)}
+#grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.03;mix-blend-mode:overlay}
+#grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(500px at var(--mx,50%) var(--my,30%),#000,transparent);mask-image:radial-gradient(500px at var(--mx,50%) var(--my,30%),#000,transparent)}
+#aurora{position:fixed;top:0;left:0;width:800px;height:800px;margin:-400px 0 0 -400px;z-index:1;pointer-events:none;will-change:transform;background:radial-gradient(circle,rgba(0,240,255,.2),rgba(112,0,255,.14) 40%,rgba(255,0,122,.1) 60%,transparent 72%);mix-blend-mode:screen}
+main,nav,footer{position:relative;z-index:2}
+#storm{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;mix-blend-mode:screen}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);mix-blend-mode:screen;will-change:transform,opacity;pointer-events:none}
+.mask{display:block;overflow:hidden;padding-bottom:.08em}
+.mask>span{display:inline-block;will-change:transform}
+.metal{background:linear-gradient(180deg,#fff 10%,#9aa0c0 55%,#e8eaff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mag{display:inline-block;will-change:transform}
+.cta{position:relative;overflow:hidden;border-radius:999px;padding:16px 30px;font-weight:700;color:#050508;background:#fff;isolation:isolate}
+.cta::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,var(--cy),var(--vi),var(--mg));transform:translateY(101%);transition:transform .5s cubic-bezier(.7,0,.2,1);border-radius:50% 50% 0 0/30% 30% 0 0}
+.cta:hover::before{transform:translateY(0);border-radius:0}
+.cta:hover{color:#fff}
+.pill{position:relative}
+.tabs{position:relative;display:inline-flex;gap:2px;padding:5px;border-radius:999px}
+.tab{position:relative;z-index:1;padding:9px 18px;border-radius:999px;font-size:13px;color:var(--mu);transition:color .3s;cursor:pointer;background:none;border:0}
+.tab.on{color:#fff}
+#slider{position:absolute;z-index:0;top:5px;bottom:5px;border-radius:999px;background:rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.3);transition:left .4s cubic-bezier(.7,0,.2,1),width .4s cubic-bezier(.7,0,.2,1)}
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;perspective:1200px}
+.card{position:relative;border-radius:24px;padding:28px;min-height:230px;transform-style:preserve-3d;will-change:transform;transition:opacity .4s,filter .4s,transform .15s ease-out;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--a,0deg),transparent 0 70%,var(--cy),var(--vi),var(--mg),transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover::before{opacity:1;animation:spin 1.6s linear infinite}
+.card:hover{box-shadow:0 0 60px rgba(112,0,255,.35),inset 0 1px 0 rgba(255,255,255,.1)}
+@property --a{syntax:'<angle>';initial-value:0deg;inherits:false}
+@keyframes spin{to{--a:360deg}}
+.sheen{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.22),transparent 55%)}
+.card:hover .sheen{opacity:1}
+.card.hide{opacity:.12;filter:blur(3px);pointer-events:none}
+.c1{grid-column:span 4;min-height:300px}.c2{grid-column:span 2}.c3{grid-column:span 2}.c4{grid-column:span 4}
+@media(max-width:760px){.c1,.c2,.c3,.c4{grid-column:span 6}}
+.marq{overflow:hidden;transform:rotate(-2deg);-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.track{display:flex;gap:14px;width:max-content;will-change:transform;margin-bottom:14px}
+.chip{padding:14px 26px;border-radius:999px;white-space:nowrap;font-size:18px;font-weight:500;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 0 24px rgba(0,240,255,.12)}
+.term{border-radius:18px;overflow:hidden;box-shadow:0 0 80px rgba(112,0,255,.25),inset 0 1px 0 rgba(255,255,255,.15)}
+.cur{display:inline-block;width:9px;height:1.1em;background:var(--cy);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+a:focus-visible,button:focus-visible{outline:2px solid var(--cy);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(hover:none){#aurora{display:none}}
+</style>
+</head>
+<body>
+<svg id="grain" width="100%" height="100%" aria-hidden="true"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"><animate attributeName="seed" values="1;5;2;8;3" dur=".6s" repeatCount="indefinite"/></feTurbulence></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div id="grid"></div><div id="aurora"></div><canvas id="storm" aria-hidden="true"></canvas>
+
+<nav class="fixed left-1/2 -translate-x-1/2 w-[calc(100%-24px)] max-w-2xl glass rounded-full px-3 py-2 flex items-center justify-between" style="top:calc(12px + env(safe-area-inset-top,0px));z-index:50">
+  <a href="#top" class="mag mono text-xs px-3 py-2">KLS.dev</a>
+  <div class="flex text-sm">
+    <a class="mag px-3 py-2" href="#about">About</a>
+    <a class="mag px-3 py-2" href="#work">Work</a>
+    <a class="mag px-3 py-2" href="#skills">Skills</a>
+    <a class="mag px-3 py-2" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<main id="top">
+<section class="relative min-h-screen flex items-center px-5 pt-28 pb-16 overflow-hidden">
+  <div class="orb" style="width:420px;height:420px;background:#00f0ff;opacity:.35;top:10%;left:5%"></div>
+  <div class="orb" style="width:480px;height:480px;background:#7000ff;opacity:.45;top:25%;right:5%"></div>
+  <div class="orb" style="width:380px;height:380px;background:#ff007a;opacity:.3;bottom:5%;left:35%"></div>
+  <div class="relative max-w-6xl mx-auto w-full">
+    <div class="glass mono inline-flex items-center gap-3 rounded-full px-4 py-2 text-xs mb-8">[ AVAILABLE FOR WORK // SYSTEM ONLINE ]</div>
+    <h1 class="display metal text-[clamp(2.8rem,10.5vw,9rem)]" aria-label="Kristoff Lance Sosmeña, Web and Game Developer">
+      <span class="mask"><span>Kristoff Lance</span></span>
+      <span class="mask"><span>Sosmeña.</span></span>
+    </h1>
+    <p class="mask mt-6 text-xl md:text-2xl text-[var(--mu)]"><span>Web &amp; Game Developer building efficient digital experiences.</span></p>
+    <div class="mt-10 flex flex-wrap gap-4 items-center">
+      <a href="#work" class="mag cta">See my work</a>
+      <a href="#contact" class="mag glass rounded-full px-7 py-4 font-medium">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="px-5 py-24">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-5 gap-6">
+    <div class="md:col-span-3 glass rounded-3xl p-8 md:p-12">
+      <p class="mono text-xs text-[var(--cy)] mb-5">// ABOUT</p>
+      <h2 class="display text-4xl md:text-6xl mb-6">2nd year BSIS student with a builder&rsquo;s itch.</h2>
+      <p class="text-lg text-[var(--mu)] max-w-[60ch]">I&rsquo;m Kristoff Lance L. Sosmeña, a second-year Bachelor of Science in Information Systems student at CMDI, Tagum City. I love turning ideas into working websites and games, and I&rsquo;m aiming to grow into a game developer and web designer.</p>
+    </div>
+    <div class="md:col-span-2 glass rounded-3xl p-8 flex flex-col gap-5 justify-center">
+      <div><p class="mono text-xs text-[var(--mu)]">SCHOOL</p><p class="text-lg">CMDI, Tagum City</p></div>
+      <div><p class="mono text-xs text-[var(--mu)]">INTERESTS</p><p class="text-lg">Web development, UI/UX design, game development</p></div>
+      <div><p class="mono text-xs text-[var(--mu)]">CAREER GOALS</p><p class="text-lg">Game developer, web designer</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="px-5 py-24">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-10">
+      <h2 class="display text-5xl md:text-7xl">Evidence of work</h2>
+      <div class="tabs glass" id="tabs" role="tablist"><span id="slider"></span>
+        <button class="tab on" data-f="all">All</button><button class="tab" data-f="web">Web</button><button class="tab" data-f="game">Game</button>
+      </div>
+    </div>
+    <div class="bento" id="bento">
+      <article class="card glass c1" data-t="game"><div class="sheen"></div>
+        <p class="mono text-xs text-[var(--cy)] mb-3">GAME // JAVASCRIPT</p>
+        <h3 class="display text-3xl md:text-4xl mb-3">Game prototypes</h3>
+        <p class="text-[var(--mu)] max-w-[52ch]">Core architecture and game mechanics designed by me, with AI handling boilerplate and error troubleshooting so prototypes get playable faster.</p></article>
+      <article class="card glass c2" data-t="web"><div class="sheen"></div>
+        <p class="mono text-xs text-[var(--cy)] mb-3">WEB // HTML + CSS</p>
+        <h3 class="display text-2xl mb-3">Web prototypes</h3>
+        <p class="text-[var(--mu)]">Functional pages built and debugged in VSCodium.</p></article>
+      <article class="card glass c3" data-t="web"><div class="sheen"></div>
+        <p class="mono text-xs text-[var(--cy)] mb-3">WEB // UI DESIGN</p>
+        <h3 class="display text-2xl mb-3">Interface design</h3>
+        <p class="text-[var(--mu)]">Layout and UI decisions stay with me, not the autopilot.</p></article>
+      <article class="card glass c4" data-t="game"><div class="sheen"></div>
+        <p class="mono text-xs text-[var(--cy)] mb-3">WORKFLOW // AI-ASSISTED</p>
+        <h3 class="display text-3xl md:text-4xl mb-3">Faster builds, fewer syntax traps</h3>
+        <p class="text-[var(--mu)] max-w-[52ch]">Delegating routine code to AI frees my energy for creative problem-solving and core system logic.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="py-24 overflow-hidden">
+  <div class="px-5 max-w-6xl mx-auto mb-10"><h2 class="display text-5xl md:text-7xl">Skills &amp; tools</h2></div>
+  <div class="marq py-6">
+    <div class="track" id="t1"></div>
+    <div class="track" id="t2"></div>
+  </div>
+</section>
+
+<section class="px-5 py-24">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="display text-4xl md:text-6xl mb-8">How I work</h2>
+    <div class="term glass">
+      <div class="flex items-center gap-2 px-4 py-3 border-b border-white/10"><i class="w-3 h-3 rounded-full bg-[#ff5f57]"></i><i class="w-3 h-3 rounded-full bg-[#febc2e]"></i><i class="w-3 h-3 rounded-full bg-[#28c840]"></i><span class="mono text-xs text-[var(--mu)] ml-3">workflow.md</span></div>
+      <div class="mono text-sm leading-relaxed p-6 md:p-8 text-[#d6d8f0]">
+        <p class="text-[var(--cy)] mb-4">$ cat philosophy.txt</p>
+        <p id="typed" class="min-h-[22rem] md:min-h-[17rem]"></p><span class="cur"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="px-5 py-24">
+  <div class="max-w-4xl mx-auto glass rounded-3xl p-8 md:p-14 text-center">
+    <h2 class="display metal text-5xl md:text-7xl mb-6">Let&rsquo;s build something.</h2>
+    <p class="text-[var(--mu)] mb-10">Open to projects, collaborations, and internships.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a class="mag cta" href="mailto:lan0ff546@gmail.com">lan0ff546@gmail.com</a>
+      <a class="mag glass rounded-full px-7 py-4 font-medium" href="tel:+639912481196">0991 248 1196</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="px-5 py-10 text-center mono text-xs text-[var(--mu)]">© 2026 Kristoff Lance L. Sosmeña · CMDI, Tagum City</footer>
+
+<script>
+(function(){
+gsap.registerPlugin(ScrollTrigger);
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var fine=matchMedia('(hover:hover)').matches;
+
+/* hero reveal */
+gsap.set('.mask>span',{yPercent:110});
+gsap.to('.mask>span',{yPercent:0,duration:1.2,ease:'expo.out',stagger:.12,delay:.2});
+
+/* orbs drift */
+document.querySelectorAll('.orb').forEach(function(o,i){
+  gsap.to(o,{x:'+=90',y:'-=70',scale:1.25,opacity:'+=.1',duration:7+i*2,repeat:-1,yoyo:true,ease:'sine.inOut'});
+});
+
+/* aurora + grid */
+var ax=innerWidth/2,ay=innerHeight/3,tx=ax,ty=ay,au=document.getElementById('aurora'),gr=document.getElementById('grid');
+addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY});
+gsap.ticker.add(function(){
+  ax+=(tx-ax)*.08;ay+=(ty-ay)*.08;
+  au.style.transform='translate3d('+ax+'px,'+ay+'px,0)';
+  gr.style.setProperty('--mx',ax+'px');gr.style.setProperty('--my',ay+'px');
+});
+
+/* magnetic */
+if(fine&&!reduce){
+  document.querySelectorAll('.mag').forEach(function(el){
+    var qx=gsap.quickTo(el,'x',{duration:.5,ease:'power3'}),qy=gsap.quickTo(el,'y',{duration:.5,ease:'power3'});
+    el.addEventListener('mousemove',function(e){var r=el.getBoundingClientRect();qx((e.clientX-r.left-r.width/2)*.35);qy((e.clientY-r.top-r.height/2)*.35)});
+    el.addEventListener('mouseleave',function(){qx(0);qy(0)});
+  });
+}
+
+/* tilt + glare */
+document.querySelectorAll('.card').forEach(function(c){
+  c.addEventListener('mousemove',function(e){
+    if(reduce)return;
+    var r=c.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+    c.style.transform='rotateX('+((.5-py)*14)+'deg) rotateY('+((px-.5)*14)+'deg) translateZ(0)';
+    c.style.setProperty('--gx',(100-px*100)+'%');c.style.setProperty('--gy',(100-py*100)+'%');
+  });
+  c.addEventListener('mouseleave',function(){c.style.transform=''});
+});
+
+/* filter tabs + sliding pill */
+var tabs=document.querySelectorAll('.tab'),sl=document.getElementById('slider');
+function place(t){sl.style.left=t.offsetLeft+'px';sl.style.width=t.offsetWidth+'px'}
+tabs.forEach(function(t){t.addEventListener('click',function(){
+  tabs.forEach(function(x){x.classList.remove('on')});t.classList.add('on');place(t);
+  document.querySelectorAll('.card').forEach(function(c){c.classList.toggle('hide',t.dataset.f!=='all'&&c.dataset.t!==t.dataset.f)});
+})});
+addEventListener('load',function(){place(document.querySelector('.tab.on'))});
+addEventListener('resize',function(){place(document.querySelector('.tab.on'))});
+place(tabs[0]);
+
+/* marquee */
+var items=['HTML','CSS','JavaScript','VSCodium','AI Coding Assistants','Game Mechanics','UI/UX Design'];
+function fill(id){var t=document.getElementById(id),h='';for(var k=0;k<4;k++)items.forEach(function(s){h+='<span class="chip glass">'+s+'</span>'});t.innerHTML=h;return t}
+var t1=fill('t1'),t2=fill('t2');
+var w=t1.scrollWidth/4;
+gsap.fromTo(t1,{x:0},{x:-w,duration:28,ease:'none',repeat:-1});
+gsap.fromTo(t2,{x:-w},{x:0,duration:34,ease:'none',repeat:-1});
+ScrollTrigger.create({trigger:'#skills',start:'top bottom',end:'bottom top',onUpdate:function(s){
+  var v=Math.min(Math.abs(s.getVelocity())/400,4);
+  gsap.globalTimeline.timeScale(1+v);gsap.to(gsap.globalTimeline,{timeScale:1,duration:.8,overwrite:true});
+}});
+
+/* terminal typing */
+var txt="To overcome the time-consuming bottlenecks of manual coding and debugging, I operated as a Web & Game Developer to build efficient digital experiences using HTML, CSS, JavaScript, VSCodium, and AI coding assistants. My process centered on designing robust core architecture and game mechanics while delegating repetitive boilerplate code and error troubleshooting to AI, which allowed me to successfully build and debug functional web and game prototypes much faster without getting stuck on tedious syntax errors. Ultimately, this project reinforced a vital lesson for my development workflow: leveraging AI for routine tasks frees up my energy to focus entirely on creative problem-solving, UI design, and core system logic.";
+var el=document.getElementById('typed');
+if(reduce){el.textContent=txt}else{
+  var o={n:0};
+  ScrollTrigger.create({trigger:'.term',start:'top 75%',once:true,onEnter:function(){
+    gsap.to(o,{n:txt.length,duration:9,ease:'none',onUpdate:function(){el.textContent=txt.slice(0,Math.round(o.n))}});
+  }});
+}
+/* lightning storm */
+if(!reduce){
+  var cv=document.getElementById('storm'),cx=cv.getContext('2d'),W,H,dpr=Math.min(devicePixelRatio||1,2),bolts=[],flash=0,next=performance.now()+1200;
+  function size(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+  size();addEventListener('resize',size);
+  function seg(x1,y1,x2,y2,d,out){
+    var L=Math.hypot(x2-x1,y2-y1);
+    if(d<=0||L<8){out.push([x1,y1,x2,y2]);return}
+    var mx=(x1+x2)/2+(Math.random()-.5)*L*.5,my=(y1+y2)/2+(Math.random()-.5)*L*.2;
+    seg(x1,y1,mx,my,d-1,out);seg(mx,my,x2,y2,d-1,out);
+  }
+  function strike(){
+    var x=Math.random()*W,ex=x+(Math.random()-.5)*W*.4,ey=H*(.5+Math.random()*.5),m=[],b=[];
+    seg(x,-10,ex,ey,7,m);
+    m.forEach(function(s){if(Math.random()<.07)seg(s[2],s[3],s[2]+(Math.random()-.5)*280,s[3]+80+Math.random()*200,5,b)});
+    bolts.push({m:m,b:b,t:performance.now(),life:550});flash=1;
+  }
+  function draw(now){
+    cx.clearRect(0,0,W,H);
+    if(now>next){strike();if(Math.random()<.4)setTimeout(strike,140);next=now+2800+Math.random()*4500}
+    if(flash>.01){var g=cx.createRadialGradient(W/2,0,0,W/2,0,H);g.addColorStop(0,'rgba(140,160,255,'+flash*.16+')');g.addColorStop(1,'rgba(112,0,255,0)');cx.fillStyle=g;cx.fillRect(0,0,W,H);flash*=.9}
+    cx.lineJoin='round';cx.lineCap='round';
+    bolts=bolts.filter(function(o){return now-o.t<o.life});
+    bolts.forEach(function(o){
+      var a=1-(now-o.t)/o.life;if(Math.random()>.82)a*=.35;
+      [[o.b,1.2,'#7000ff',18],[o.m,2.6,'#00f0ff',30]].forEach(function(p){
+        cx.beginPath();p[0].forEach(function(s){cx.moveTo(s[0],s[1]);cx.lineTo(s[2],s[3])});
+        cx.strokeStyle='rgba(225,240,255,'+a+')';cx.lineWidth=p[1];cx.shadowColor=p[2];cx.shadowBlur=p[3];cx.stroke();
+      });
+    });
+    cx.shadowBlur=0;requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+}
+})();
+</script>
+</body>
+</html>
